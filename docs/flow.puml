@@ -1,0 +1,24 @@
+@startuml
+
+title Morning Brew workflow
+
+state "Aggregate data" as aggregate
+state "Data source" as data_sources
+state "Synthesize text to speech" as synthesize
+state "Bucket" as bucket
+state "Feed XML" as feed
+state "Update feed xml" as feed_svc
+state "Client device / App" as client
+
+[*] -> aggregate : Cronjob trigger
+aggregate -down-> data_sources
+aggregate -> synthesize
+synthesize -down-> bucket : Store audio files in a publicly available bucket
+
+feed -> bucket : Feed references audio files
+synthesize -> feed_svc
+feed_svc -down-> feed
+
+client -up-> feed : Client pulls updates from the feed
+
+@enduml
