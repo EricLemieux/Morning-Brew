@@ -8,4 +8,5 @@ test:
 
 .PHONY: format
 format:
+	go mod tidy
 	go fmt ./...
